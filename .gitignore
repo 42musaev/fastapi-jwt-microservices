@@ -1,0 +1,12 @@
+# Python-specific ignores
+__pycache__/
+
+# IDE files
+.idea/
+
+# Ignore JWT private and public keys
+auth/certs/jwt-private.pem
+auth/certs/jwt-public.pem
+
+# env file
+.env

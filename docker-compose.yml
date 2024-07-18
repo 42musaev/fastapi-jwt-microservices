@@ -1,0 +1,35 @@
+services:
+  auth:
+    container_name: auth_service
+    build:
+      context: ./
+      dockerfile: auth/Dockerfile
+    ports:
+      - 8000:8000
+    command: /bin/sh -c "alembic upgrade head && python3 main.py"
+    depends_on:
+      - auth_db
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    restart: always
+    volumes:
+      - ./auth:/app
+    env_file:
+      .env
+
+  auth_db:
+    container_name: auth_db_service
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+volumes:
+  pgdata:
